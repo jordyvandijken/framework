@@ -1,13 +1,13 @@
 #include <common/renderer.h>
 
 Renderer::Renderer(){
-  window_width = 1280;
-  window_height = 720;
+  window_width = SWIDTH;
+  window_height = SHEIGHT;
 
-  fullScreen = false;
+  fullScreen = FULLSCREEN;
 
-  fragment_shader	= "shaders/sprite.frag";
-  vertex_shader	= "shaders/sprite.vert";
+  fragment_shader	= SPRITEFRAGMENTSHADER;
+  vertex_shader	= SPRITEVERTEXSHADER;
 
   programID = 0;
   matrixID = 0;
@@ -17,7 +17,6 @@ Renderer::Renderer(){
   textureID = 0;
 
   this->initGL();
-
 
 }
 
@@ -176,7 +175,7 @@ int Renderer::initGL() {
 
   // Open a window and create its OpenGL context
   //window = glfwCreateWindow( window_width, window_height, "Demo", glfwGetPrimaryMonitor(), NULL);
-  window = glfwCreateWindow( window_width, window_height, "Demo", NULL, NULL);
+  window = glfwCreateWindow( window_width, window_height, WINDOWNAME, NULL, NULL);
   if( window == NULL ){
     fprintf( stderr, "Failed to open GLFW window.\n" );
     glfwTerminate();
@@ -186,7 +185,7 @@ int Renderer::initGL() {
   glfwMakeContextCurrent(window);
 
   // vsync (0=off, 1=on)
-  glfwSwapInterval(0);
+  glfwSwapInterval(VSYNC);
 
   // Initialize GLEW
   if (glewInit() != GLEW_OK) {

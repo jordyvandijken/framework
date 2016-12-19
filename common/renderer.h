@@ -21,6 +21,7 @@ using namespace glm;
 #include <common/shader.h>
 #include <common/texture.h>
 #include <common/scene.h>
+#include <common/config.h>
 
 class Renderer
 {

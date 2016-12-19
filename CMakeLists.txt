@@ -56,6 +56,9 @@ add_executable(demo
 	demo/demo.cpp
   demo/scene1.cpp
   demo/scene1.h
+  demo/scene2.cpp
+  demo/scene2.h
+  common/config.h
 	common/shader.cpp
   common/shader.h
 	common/camera.cpp
