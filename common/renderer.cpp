@@ -17,7 +17,6 @@ Renderer::Renderer(){
   textureID = 0;
 
   this->initGL();
-
 }
 
 Renderer::~Renderer(){
@@ -41,9 +40,7 @@ void Renderer::run(Scene* _scene, float deltaTime){
 
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    glm::vec3 cursor = scene->camera()->getCursor();
-    //printf("(%f,%f)\n",cursor.x, cursor.y);
-
+    scene->input->updateInput(window, scene->camera());
     scene->update(deltaTime);
 
     std::vector<Entity*> entities = scene->getEntities();
@@ -158,7 +155,6 @@ void Renderer::setScreenSize(int _sWidth, int _sHeight, bool _wanted_fullSreen){
 void Renderer::swapBuffers() {
   // Swap buffers at last
   glfwSwapBuffers(window);
-  glfwPollEvents();
 } // swapBuffers
 
 int Renderer::initGL() {

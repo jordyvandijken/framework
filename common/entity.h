@@ -27,7 +27,7 @@ public:
 	Entity();
 	virtual ~Entity();
 
-	//virtual void update(float deltaTime) = 0;
+	virtual void update(float deltaTime) {};
 
 	glm::vec2 position;
 	glm::vec2 scale;
@@ -39,6 +39,8 @@ public:
 	void addSprite(Sprite* _sprite);
 	void addChild(Entity* _child);
 	void removeChild(Entity* _child);
+	void setPosition(int _x, int _y);
+	void setPosition(glm::vec2 _pos);
 
 	std::vector<Entity*> getChildren() {return children;};
 

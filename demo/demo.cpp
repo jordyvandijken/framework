@@ -19,19 +19,14 @@ int main( void )
 	Scene2* scene2 = new Scene2();
 	scenes.push_back(scene1);
 	scenes.push_back(scene2);
+	// show what scene
 	int showScene = 0;
-	int _time = 0;
+
+	// need to show fps in console
+	core->setShowFps(true);
 
 	do {
 		core->runScene(scenes[showScene]);
-		core->setShowFps(true);
-		_time++;
-		if (_time == 1000) {
-			showScene = 1;
-		} else if (_time > 2000) {
-			showScene = 0;
-			_time = 0;
-		}
 	} // Check if the ESC key was pressed or the window was closed
 	while(!core->mustQuit());
 

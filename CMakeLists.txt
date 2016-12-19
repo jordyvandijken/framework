@@ -58,6 +58,8 @@ add_executable(demo
   demo/scene1.h
   demo/scene2.cpp
   demo/scene2.h
+  demo/player.cpp
+  demo/player.h
   common/config.h
 	common/shader.cpp
   common/shader.h
@@ -75,6 +77,8 @@ add_executable(demo
   common/entity.h
   common/core.cpp
   common/core.h
+  common/input.cpp
+  common/input.h
 )
 target_link_libraries(demo
 	${ALL_LIBS}
@@ -105,5 +109,5 @@ file(
 )
 file(
 	COPY common/shaders
-	DESTINATION ${CMAKE_BINARY_§DIR}
+	DESTINATION ${CMAKE_BINARY_DIR}
 )

@@ -4,6 +4,8 @@
 #include <common/scene.h>
 #include <common/entity.h>
 
+#include <demo/player.h>
+
 class Scene2 : public Scene
 {
 public:
@@ -12,9 +14,7 @@ public:
 	void update(float deltaTime);
 
 private:
-		Entity* test;
-
-		bool _flip;
+		Player* player;
 };
 
 #endif

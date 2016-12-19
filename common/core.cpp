@@ -30,6 +30,8 @@ void Core::showFps() {
   static float del_time = 0;
   if (del_time >= 1) {
     std::cout << "FPS: " << fps << '\n';
+    int i = fps;
+    averageFps.push_back(i);
     fps = 0;
     del_time = 0;
   }
@@ -45,6 +47,18 @@ void Core::setShowFps(bool _c){
   needToShow = _c;
 }
 
+void Core::showAverageFps(){
+  int _fps = 0;
+  for (int p = 0; p < averageFps.size(); p++){
+    _fps += averageFps[p];
+  }
+  _fps = _fps / averageFps.size();
+  std::cout << "averageFps: " << _fps << '\n';
+}
+
 Core::~Core(){
+  if (needToShow && averageFps.size() > 0) {
+    showAverageFps();
+  }
   delete renderer;
 }

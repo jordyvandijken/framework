@@ -7,7 +7,7 @@
 
 #define FULLSCREEN 0 ///< Fullscreen or not
 
-#define WINDOWNAME "Dickbutt" ///< The window name
+#define WINDOWNAME "Test ding" ///< The window name
 
 #define SPRITEVERTEXSHADER "shaders/sprite.vert" ///< vertexshader name
 #define SPRITEFRAGMENTSHADER "shaders/sprite.frag" ///< fragmentshader name

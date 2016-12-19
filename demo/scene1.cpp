@@ -39,7 +39,7 @@ void Scene1::update(float deltaTime){
 
 
   // update entities
-  entities[0]->position = glm::vec2(camera()->getCursor().x,_camera->getCursor().y);
+  entities[0]->position = glm::vec2(input->getCursor().x,input->getCursor().y);
   entities[1]->rotation += 40.0f * deltaTime;
   entities[0]->getChild(0)->rotation -= 40.0f * deltaTime;
   entities[0]->getChild(0)->getChild(0)->rotation = 360 - entities[0]->getChild(0)->rotation;
@@ -67,28 +67,24 @@ void Scene1::update(float deltaTime){
     _flip = false;
   }
 
-  // // Right and Down vector
-  // glm::vec3 right = glm::vec3(1, 0, 0);
-  // glm::vec3 up = glm::vec3(0, -1, 0);
-  //
-  // float	speed = 300.0f; // 300 units / second
-  //
-  // // Move up
-  // if (glfwGetKey( window, GLFW_KEY_UP ) == GLFW_PRESS){
-  //   camera()->setPosition(up * deltaTime *  speed);
-  // }
-  // // Move down
-  // if (glfwGetKey( window, GLFW_KEY_DOWN ) == GLFW_PRESS){
-  //   camera()->setPosition(-up * deltaTime *  speed);
-  // }
-  // // Strafe right
-  // if (glfwGetKey( window, GLFW_KEY_RIGHT ) == GLFW_PRESS){
-  //   camera()->setPosition(right * deltaTime *  speed);
-  // }
-  // // Strafe left
-  // if (glfwGetKey( window, GLFW_KEY_LEFT ) == GLFW_PRESS){
-  //   camera()->setPosition(-right * deltaTime *  speed);
-  // }
+  float	speed = 300.0f; // 300 units / second
+
+  // Move up
+  if (input->getKey(KEY_UP)){
+    camera()->addPosition(glm::vec2(0,-1) * deltaTime *  speed);
+  }
+  // Move down
+  if (input->getKey(KEY_DOWN)){
+    camera()->addPosition(glm::vec2(0,1) * deltaTime *  speed);
+  }
+  // Strafe right
+  if (input->getKey(KEY_RIGHT)){
+    camera()->addPosition(glm::vec2(1,0) * deltaTime *  speed);
+  }
+  // Strafe left
+  if (input->getKey(KEY_LEFT)){
+    camera()->addPosition(glm::vec2(-1,0) * deltaTime *  speed);
+  }
 }
 
 Scene1::~Scene1(){

@@ -50,6 +50,14 @@ Entity* Entity::getChild(int _num){
   return children[_num];
 }
 
+void Entity::setPosition(int _x, int _y) {
+	this->position = glm::vec2(_x, _y);
+}
+
+void Entity::setPosition(glm::vec2 _pos){
+	this->position = _pos;
+}
+
 Entity::~Entity(){
   if (sprite != NULL) {
     delete sprite;

@@ -18,11 +18,9 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtx/euler_angles.hpp>
 
-#include "camera.h"
+#include <common/camera.h>
 #include <common/entity.h>
-
-// temp
-#include <common/sprite.h>
+#include <common/input.h>
 
 class Scene
 {
@@ -41,6 +39,8 @@ public:
 	std::vector<Entity *> entities;
 
 	Camera* _camera;
+
+	Input* input;
 
 private:
 

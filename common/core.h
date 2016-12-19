@@ -3,6 +3,7 @@
 
 #include <common/scene.h>
 #include <common/renderer.h>
+#include <vector>
 
 class Core
 {
@@ -20,7 +21,9 @@ private:
 	float deltaTime;
 	void calcDeltatime();
 	void showFps();
+	void showAverageFps();
 	bool needToShow;
+	std::vector<int> averageFps;
 };
 
 #endif
