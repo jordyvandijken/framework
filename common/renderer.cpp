@@ -73,10 +73,13 @@ void Renderer::renderEntity(glm::mat4 &modelMatrix, Entity* entity){  // Compute
   // Compute the ViewMatrix from keyboard and mouse input (see: camera.h/cpp)
   scene->camera()->computeMatricesFromInputs(window);
 
-  glm::mat4 viewMatrix = scene->camera()->getViewMatrix(); // get from Camera (Camera position and direction)
+  // get from Camera (Camera position and direction)
+  glm::mat4 viewMatrix = scene->camera()->getViewMatrix();
 
+  // get the modelMatrix
   modelMatrix *= getModelMatrix(entity->getPosition(), entity->getScale(), entity->getRotation());
 
+  // create a MVP
   glm::mat4 MVP = projectionMatrix * viewMatrix * modelMatrix;
 
   // Send our transformation to the currently bound shader,

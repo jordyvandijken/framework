@@ -17,7 +17,7 @@ public:
 
   void computeMatricesFromInputs(GLFWwindow* window);
   void setPosition(int _x, int _y);
-  void setPosition(glm::vec3 _pos);
+  void setPosition(glm::vec2 _pos);
   void addPosition(glm::vec2 _pos);
 
   glm::mat4 getViewMatrix();
@@ -31,6 +31,5 @@ private:
 
   int distance;
 };
-
 
 #endif

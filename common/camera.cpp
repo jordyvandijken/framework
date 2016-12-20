@@ -18,14 +18,12 @@ glm::mat4 Camera::getViewMatrix() {
 	return ViewMatrix;
 }
 
-
-
 void Camera::setPosition(int _x, int _y) {
 	this->position = glm::vec3(_x, _y, distance);
 }
 
-void Camera::setPosition(glm::vec3 _pos) {
-	this->position = _pos;
+void Camera::setPosition(glm::vec2 _pos) {
+	this->position = glm::vec3(_pos.x, _pos.y, distance);
 }
 
 void Camera::addPosition(glm::vec2 _pos) {
