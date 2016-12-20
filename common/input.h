@@ -1,3 +1,14 @@
+/**
+ * @file input.h
+ *
+ * @brief The Input header file.
+ *
+ * This file is part of a 2D OpenGL framework.
+ *
+ * - Copyright 2016 Jordy van Dijken <jordyvandijken@gmail.com>
+ *   - Initial commit
+ */
+
 #ifndef INPUT_H
 #define INPUT_H
 
@@ -227,6 +238,7 @@ public:
 
 private:
 	GLFWwindow* _window; ///< @brief GLFWwindow* _window
+
 	void _handleKey(int key); ///< @brief update internal array of keys
 	void _handleMouse(int key); ///< @brief update internal array of keys
 
@@ -244,7 +256,7 @@ private:
 	int _windowWidth; ///< @brief Width of the window
 	int _windowHeight; ///< @brief Height of the window
 
-	glm::vec3 cursor;
+	glm::vec3 cursor; ///< @brief cursor position in the window
 };
 
 #endif /* INPUT_H */

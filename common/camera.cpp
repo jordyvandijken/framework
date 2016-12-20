@@ -11,7 +11,6 @@ using namespace glm;
 Camera::Camera() {
 	// Initial position : on +Z
 	position = glm::vec3( 0, 0, 5 );
-	distance = 5;
 }
 
 glm::mat4 Camera::getViewMatrix() {
@@ -19,11 +18,11 @@ glm::mat4 Camera::getViewMatrix() {
 }
 
 void Camera::setPosition(int _x, int _y) {
-	this->position = glm::vec3(_x, _y, distance);
+	this->position = glm::vec3(_x, _y, 5);
 }
 
 void Camera::setPosition(glm::vec2 _pos) {
-	this->position = glm::vec3(_pos.x, _pos.y, distance);
+	this->position = glm::vec3(_pos.x, _pos.y, 5);
 }
 
 void Camera::addPosition(glm::vec2 _pos) {
@@ -31,7 +30,7 @@ void Camera::addPosition(glm::vec2 _pos) {
 }
 
 void Camera::computeMatricesFromInputs(GLFWwindow* window) {
-	this->position.z = distance;
+	this->position.z = 5;
 	// View matrix
 	ViewMatrix = glm::lookAt(
 			position, // Camera is at (xpos,ypos,5), in World Space

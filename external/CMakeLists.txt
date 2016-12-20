@@ -54,3 +54,10 @@ target_link_libraries(GLEW_190
 	${OPENGL_LIBRARY}
 	${EXTRA_LIBS}
 )
+
+
+### GLEW ###
+
+add_subdirectory(lpng1626)
+
+

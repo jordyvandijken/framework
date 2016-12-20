@@ -1,3 +1,14 @@
+/**
+ * @file config.h
+ *
+ * @brief The Config header file.
+ *
+ * This file is part of a 2D OpenGL framework.
+ *
+ * - Copyright 2016 Jordy van Dijken <jordyvandijken@gmail.com>
+ *   - Initial commit
+ */
+
 #ifndef CONFIG_H
 #define CONFIG_H
 
@@ -16,4 +27,4 @@
 
 
 
-#endif
+#endif /* CONFIG_H */

@@ -1,3 +1,14 @@
+/**
+ * @file renderer.h
+ *
+ * @brief The Renderer header file.
+ *
+ * This file is part of a 2D OpenGL framework.
+ *
+ * - Copyright 2016 Jordy van Dijken <jordyvandijken@gmail.com>
+ *   - Initial commit
+ */
+
 #ifndef RENDERER_H
 #define RENDERER_H
 
@@ -23,48 +34,67 @@ using namespace glm;
 #include <common/scene.h>
 #include <common/config.h>
 
-class Renderer
-{
+/// @brief The Camera class is a instance of standard Scene.
+class Renderer {
 public:
-	Renderer();
-	virtual ~Renderer();
-
+	Renderer(); ///< @brief Constructor of the Camera
+	virtual ~Renderer(); ///< @brief Destructor of the Camera
+	/// @brief runs the scene.
+	/// @param Scene* scene the scene that you want to run
+	/// @param float deltaTime the number of seconds since the last update
+	/// @return void
 	void run(Scene* scene, float deltaTime);
+	/// @brief render entity.
+	/// @param glm::mat4 modelMatrix
+	/// @param Entity* entity
+	/// @return void
 	void renderEntity(glm::mat4 &modelMatrix, Entity* entity);
+	/// @brief set screen size.
+	/// @param int width
+	/// @param int height
+	/// @param bool fullScreen
+	/// @return void
 	void setScreenSize(int _sWidth, int _sHeight,bool _wanted_fullScreen);
-
+	/// @brief calculate the model matrix.
+	/// @param glm::vec2 position
+	/// @param glm::vec2 scale
+	/// @param float rotation
+	/// @return glm::mat4 - return modelMatrix
 	glm::mat4 getModelMatrix(glm::vec2 pos, glm::vec2  scal, float rot);
-
+	/// @brief get window.
+	/// @return GLFWwindow*
 	GLFWwindow* getWindow() { return window; };
-
+	/// @brief need to quit.
+	/// @return bool - need to quit (true / false)
 	bool mustQuit();
 
 private:
-	Scene* scene;
+	Scene* scene; ///< @brief instance of renderer
 
-	GLFWwindow* window;
+	GLFWwindow* window; ///< @brief window of renderer
 
-	int window_width;
-	int window_height;
+	int window_width; ///< @brief int window width
+	int window_height; ///< @brief int window height
 
-	bool fullScreen;
+	bool fullScreen; ///< @brief bool fullScreen
 
-	std::string fragment_shader;
-	std::string vertex_shader;
+	std::string fragment_shader; ///< @brief string fragment_shader
+	std::string vertex_shader; ///< @brief string vertex_shader
 
+	glm::mat4 projectionMatrix; ///< @brief projection matrix
+
+	GLuint programID; ///< @brief programID
+	GLuint matrixID; ///< @brief matrixID
+	GLuint vertexPosition_modelspaceID; ///< @brief vertexPosition_modelspaceID
+	GLuint vertexUVID; ///< @brief vertexUVID
+	GLuint texture;	///< @brief texture
+	GLuint textureID; ///< @brief textureID
+	/// @brief create windows.
+	/// @return int
 	int initGL();
-
+	/// @brief swaps buffers.
+	/// @return void
 	void swapBuffers();
-
-	glm::mat4 projectionMatrix;
-
-	GLuint programID;
-	GLuint matrixID;
-	GLuint vertexPosition_modelspaceID;
-	GLuint vertexUVID;
-	GLuint texture;
-	GLuint textureID;
-
 };
 
-#endif
+#endif /* RENDERER_H */

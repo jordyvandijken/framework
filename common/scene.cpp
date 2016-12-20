@@ -1,7 +1,7 @@
 #include "scene.h"
 
 Scene::Scene(){
-  _camera = new Camera();
+  camera = new Camera();
   input = new Input();
 }
 
@@ -10,6 +10,6 @@ void Scene::addEntity(Entity* _entity) {
 }
 
 Scene::~Scene(){
-  delete _camera;
+  delete camera;
   delete input;
 }

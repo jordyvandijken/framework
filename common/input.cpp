@@ -49,8 +49,8 @@ void Input::updateInput(GLFWwindow* w ,Camera* c) {
 	cursor.x = ((float)SWIDTH / _windowWidth) * _mouseX;
 	cursor.y = ((float)SHEIGHT / _windowHeight) * _mouseY;
 
-	cursor += c->getMousePosInput();
-
+	cursor.x += c->getPosition().x;
+	cursor.y += c->getPosition().y;
 
 	// 32-97 = ' ' to '`'
 	int i;

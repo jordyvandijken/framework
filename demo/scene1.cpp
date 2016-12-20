@@ -71,19 +71,19 @@ void Scene1::update(float deltaTime){
 
   // Move up
   if (input->getKey(KEY_UP)){
-    camera()->addPosition(glm::vec2(0,-1) * deltaTime *  speed);
+    camera->addPosition(glm::vec2(0,-1) * deltaTime *  speed);
   }
   // Move down
   if (input->getKey(KEY_DOWN)){
-    camera()->addPosition(glm::vec2(0,1) * deltaTime *  speed);
+    camera->addPosition(glm::vec2(0,1) * deltaTime *  speed);
   }
   // Strafe right
   if (input->getKey(KEY_RIGHT)){
-    camera()->addPosition(glm::vec2(1,0) * deltaTime *  speed);
+    camera->addPosition(glm::vec2(1,0) * deltaTime *  speed);
   }
   // Strafe left
   if (input->getKey(KEY_LEFT)){
-    camera()->addPosition(glm::vec2(-1,0) * deltaTime *  speed);
+    camera->addPosition(glm::vec2(-1,0) * deltaTime *  speed);
   }
 }
 

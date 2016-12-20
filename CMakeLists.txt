@@ -34,6 +34,7 @@ include_directories(
 	external/glfw-3.0.3/include/GLFW/
 	external/glm-0.9.7.0/
 	external/glew-1.9.0/include/
+	external/lpng1626/
 	.
 )
 
@@ -41,6 +42,7 @@ set(ALL_LIBS
 	${OPENGL_LIBRARY}
 	GLFW_303
 	GLEW_190
+	libpng	
 )
 
 add_definitions(

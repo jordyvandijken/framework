@@ -40,7 +40,7 @@ void Renderer::run(Scene* _scene, float deltaTime){
 
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    scene->input->updateInput(window, scene->camera());
+    scene->input->updateInput(window, scene->camera);
     scene->update(deltaTime);
 
     std::vector<Entity*> entities = scene->getEntities();
@@ -71,10 +71,10 @@ void Renderer::run(Scene* _scene, float deltaTime){
 
 void Renderer::renderEntity(glm::mat4 &modelMatrix, Entity* entity){  // Compute the ViewMatrix from keyboard and mouse input (see: camera.h/cpp)
   // Compute the ViewMatrix from keyboard and mouse input (see: camera.h/cpp)
-  scene->camera()->computeMatricesFromInputs(window);
+  scene->camera->computeMatricesFromInputs(window);
 
   // get from Camera (Camera position and direction)
-  glm::mat4 viewMatrix = scene->camera()->getViewMatrix();
+  glm::mat4 viewMatrix = scene->camera->getViewMatrix();
 
   // get the modelMatrix
   modelMatrix *= getModelMatrix(entity->getPosition(), entity->getScale(), entity->getRotation());
