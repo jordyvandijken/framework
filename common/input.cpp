@@ -52,6 +52,7 @@ void Input::updateInput(GLFWwindow* w ,Camera* c) {
 	cursor.x += c->getPosition().x;
 	cursor.y += c->getPosition().y;
 
+
 	// 32-97 = ' ' to '`'
 	int i;
 	for(i=32; i<97;i++) {

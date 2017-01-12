@@ -5,7 +5,7 @@ Scene1::Scene1(){
   _flip = false;
   //test
   test = new Entity();
-  test->addSprite(new Sprite("assets/pencils.tga",128,128));
+  test->addSprite(new Sprite("assets/default.tga",128,128));
   // _test
   Entity* _test = new Entity();
   _test->position = glm::vec2(100.0f, 100.0f);
@@ -17,16 +17,22 @@ Scene1::Scene1(){
   // _test3
   Entity* _test3 = new Entity();
   _test3->position = glm::vec2(100.0f, 100.0f);
-  _test3->addSprite(new Sprite("assets/pencils.tga",128,128));
+  _test3->addSprite(new Sprite("assets/spritesheet.tga",128,128));
   // _test4
   Entity* _test4 = new Entity();
   _test4->position = glm::vec2(50.0f, 50.0f);
-  _test4->addSprite(new Sprite("assets/pencils.tga",128,128));
+  _test4->addSprite(new Sprite("assets/default.tga",128,128));
   _test4->scale = glm::vec2(0.5f,0.5f);
+  // _test5
+  Entity* _test5 = new Entity();
+  _test5->position = glm::vec2(-50.0f, -50.0f);
+  _test5->addSprite(new Sprite("assets/default.tga",128,128));
+  _test5->scale = glm::vec2(0.5f,0.5f);
 
   test->addChild(_test3);
   _test3->rotation = 90.0;
   _test3->addChild(_test4);
+  _test3->addChild(_test5);
 
   test->layer = 1;
 
@@ -88,12 +94,5 @@ void Scene1::update(float deltaTime){
 }
 
 Scene1::~Scene1(){
-  for(int i = 0; i <= entities.size(); i++) {
-    Entity* p = entities[i];
-    delete p;
-    entities.erase (entities.begin() + i);
-  }
-  Entity* p = entities[0];
-  delete p;
-  entities.erase (entities.begin());
+
 }

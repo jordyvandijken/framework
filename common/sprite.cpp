@@ -38,7 +38,7 @@ Sprite::Sprite(std::string image_path, int sprite_width, int sprite_height) {
 
 GLuint Sprite::loadTGA(const std::string& imagepath)
 {
-  std::cout << "Loading TGA: " << imagepath << std::endl;
+  //std::cout << "Loading TGA: " << imagepath << std::endl;
 
 	FILE *file;
 	unsigned char type[4];
@@ -166,7 +166,7 @@ GLuint Sprite::loadTGA(const std::string& imagepath)
             break;
     }
 
-    std::cout << "Done loading TGA" << '\n';
+    //std::cout << "Done loading TGA" << '\n';
 
     // OpenGL has now copied the data. Free our own version
     delete [] data;

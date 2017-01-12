@@ -60,7 +60,7 @@ public:
 	/// @param glm::vec2 scale
 	/// @param float rotation
 	/// @return glm::mat4 - return modelMatrix
-	glm::mat4 getModelMatrix(glm::vec2 pos, glm::vec2  scal, float rot);
+	glm::mat4 getModelMatrix(Entity* _entity);
 	/// @brief get window.
 	/// @return GLFWwindow*
 	GLFWwindow* getWindow() { return window; };

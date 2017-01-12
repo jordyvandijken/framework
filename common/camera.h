@@ -54,6 +54,7 @@ private:
   glm::mat4 ViewMatrix; ///< @brief ViewMatrix of the Camera
 
   glm::vec3 position; ///< @brief position of the Camera
+
 };
 
 #endif /* CAMERA_H */

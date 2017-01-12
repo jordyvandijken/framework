@@ -31,11 +31,12 @@
 #include <glfw3.h>
 
 #include <common/sprite.h>
+#include <common/config.h>
 
 /// @brief The Entity class is a instance of standard Scene.
 class Entity {
 public:
-	Entity(); ///< @brief Constructor of the Entity
+	Entity(float x = 0.0f, float y = 0.0f); ///< @brief Constructor of the Entity
 	virtual ~Entity(); ///< @brief Destructor of the Entity
 	/// @brief update Entity.
 	/// @param deltaTime the number of seconds since the last update
@@ -99,6 +100,15 @@ public:
 
 	Entity* parent; ///< @brief parent of the Entity
 
+	void setModelMatrix(glm::mat4 mm);
+
+	glm::mat4 getParentModelMatrix();
+
+	void setWorldPos(glm::vec2 wp) {
+		worldpos = wp;
+	};
+
+	glm::vec2 getWorldPosition() {return worldpos;};
 private:
 	Sprite* sprite;  ///< @brief sprite of the Entity
 
@@ -107,6 +117,11 @@ private:
 	int _entityNum; ///< @brief intity number of the Entity
 
 	static int _nextNum; ///< @brief next number
+
+	glm::mat4 _modelMatrix;
+
+	glm::vec2 worldpos;
+
 };
 
 #endif

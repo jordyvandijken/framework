@@ -1,7 +1,7 @@
 /**
- * @file camera.h
+ * @file core.h
  *
- * @brief The Camera header file.
+ * @brief The Core header file.
  *
  * This file is part of a 2D OpenGL framework.
  *

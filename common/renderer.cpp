@@ -52,7 +52,7 @@ void Renderer::run(Scene* _scene, float deltaTime){
       needHigherLayer = false;
       for (int i = 0; i < entities.size(); i++){
         if (entities[i]->getLayer() == currenLayer){
-          //entities[i]->update(deltaTime);
+          entities[i]->update(deltaTime);
           glm::mat4 modelMatrix = glm::mat4(1.0f);
           renderEntity(modelMatrix,entities[i]);
         }
@@ -69,7 +69,7 @@ void Renderer::run(Scene* _scene, float deltaTime){
   }
 }
 
-void Renderer::renderEntity(glm::mat4 &modelMatrix, Entity* entity){  // Compute the ViewMatrix from keyboard and mouse input (see: camera.h/cpp)
+void Renderer::renderEntity(glm::mat4 &modelMatrix, Entity* _entity){  // Compute the ViewMatrix from keyboard and mouse input (see: camera.h/cpp)
   // Compute the ViewMatrix from keyboard and mouse input (see: camera.h/cpp)
   scene->camera->computeMatricesFromInputs(window);
 
@@ -77,7 +77,14 @@ void Renderer::renderEntity(glm::mat4 &modelMatrix, Entity* entity){  // Compute
   glm::mat4 viewMatrix = scene->camera->getViewMatrix();
 
   // get the modelMatrix
-  modelMatrix *= getModelMatrix(entity->getPosition(), entity->getScale(), entity->getRotation());
+  modelMatrix *= getModelMatrix(_entity);
+  // give the entity its modelMatrix
+  _entity->setModelMatrix(modelMatrix);
+  // fill _worldpos in Entity
+	glm::vec4 realpos = modelMatrix * glm::vec4(0,0,0,1);
+	// send the real world position after these transforms back to Entity->worldpos
+	_entity->setWorldPos(glm::vec2(realpos.x, realpos.y));
+
 
   // create a MVP
   glm::mat4 MVP = projectionMatrix * viewMatrix * modelMatrix;
@@ -88,7 +95,7 @@ void Renderer::renderEntity(glm::mat4 &modelMatrix, Entity* entity){  // Compute
 
   // Bind our texture in Texture Unit 0
   glActiveTexture(GL_TEXTURE0);
-  glBindTexture(GL_TEXTURE_2D, entity->getSprite()->getTexture());
+  glBindTexture(GL_TEXTURE_2D, _entity->getSprite()->getTexture());
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
   // Set our "myTextureSampler" sampler to user Texture Unit 0
@@ -96,7 +103,7 @@ void Renderer::renderEntity(glm::mat4 &modelMatrix, Entity* entity){  // Compute
 
   // 1st attribute buffer : vertices
   glEnableVertexAttribArray(vertexPosition_modelspaceID);
-  glBindBuffer(GL_ARRAY_BUFFER, entity->getSprite()->getVertexbuffer());
+  glBindBuffer(GL_ARRAY_BUFFER, _entity->getSprite()->getVertexbuffer());
   glVertexAttribPointer(
     vertexPosition_modelspaceID,  // The attribute we want to configure
     3,                            // size : x+y+z => 3
@@ -108,7 +115,7 @@ void Renderer::renderEntity(glm::mat4 &modelMatrix, Entity* entity){  // Compute
 
   // 2nd attribute buffer : UVs
   glEnableVertexAttribArray(vertexUVID);
-  glBindBuffer(GL_ARRAY_BUFFER, entity->getSprite()->getUvbuffer());
+  glBindBuffer(GL_ARRAY_BUFFER, _entity->getSprite()->getUvbuffer());
   glVertexAttribPointer(
     vertexUVID,                   // The attribute we want to configure
     2,                            // size : U+V => 2
@@ -125,25 +132,27 @@ void Renderer::renderEntity(glm::mat4 &modelMatrix, Entity* entity){  // Compute
   glDisableVertexAttribArray(vertexUVID);
 
   // Render all Children (recursively)
-	std::vector<Entity*> children = entity->getChildren();
+	std::vector<Entity*> children = _entity->getChildren();
 	std::vector<Entity*>::iterator child;
 	for (child = children.begin(); child != children.end(); child++) {
 		// Transform child's children...
 		this->renderEntity(modelMatrix, *child);
 		// ...then reset modelMatrix for siblings to the modelMatrix of the parent.
-		//modelMatrix = this->getModelMatrix( (*child)->getParent() );
-	}
+    modelMatrix = (*child)->getParentModelMatrix();
+  }
 }
 
-glm::mat4 Renderer::getModelMatrix(glm::vec2 pos, glm::vec2 scal, float rot) {
-  rot = rot * 0.01745329252;
+glm::mat4 Renderer::getModelMatrix(Entity* _entity) {
   // Build the Model matrix
-  glm::mat4 translationMatrix    = glm::translate(glm::mat4(1.0f), glm::vec3(pos.x, pos.y, 0.0f));
-  glm::mat4 rotationMatrix    = glm::eulerAngleYXZ(0.0f, 0.0f, rot);
-  glm::mat4 scalingMatrix        = glm::scale(glm::mat4(1.0f), glm::vec3(scal.x, scal.y, 1.0f));
+  float rot = _entity->rotation * DEGTORAD;
+  glm::mat4 translationMatrix    = glm::translate(glm::mat4(1.0f), glm::vec3(_entity->position.x, _entity->position.y, 0.0f));
+  glm::mat4 rotationMatrix       = glm::eulerAngleYXZ(0.0f, 0.0f, rot);
+  glm::mat4 scalingMatrix        = glm::scale(glm::mat4(1.0f), glm::vec3(_entity->scale.x, _entity->scale.y, 1.0f));
 
+  // create modelMatrix
   glm::mat4 modelMat = translationMatrix * rotationMatrix * scalingMatrix;
 
+  // return modelMatrix
   return modelMat;
 }
 
@@ -152,13 +161,18 @@ void Renderer::setScreenSize(int _sWidth, int _sHeight, bool _wanted_fullSreen){
   window_height = _sHeight;
   fullScreen = _wanted_fullSreen;
   //glfwSetWindowSize(window, window_width, window_height);
-  //glViewport(0, 0, window_width, window_height);
+  #ifndef __APPLE__
+		// Since apple does this automatically. This will cause some bugs where the viewport gets very small.
+
+		// Set the glViewport to the width and height of the window.
+		glViewport(0, 0, window_width, window_height);
+	#endif
 }
 
 void Renderer::swapBuffers() {
   // Swap buffers at last
   glfwSwapBuffers(window);
-} // swapBuffers
+}
 
 int Renderer::initGL() {
   // Initialise GLFW
@@ -174,7 +188,12 @@ int Renderer::initGL() {
 
   // Open a window and create its OpenGL context
   //window = glfwCreateWindow( window_width, window_height, "Demo", glfwGetPrimaryMonitor(), NULL);
-  window = glfwCreateWindow( window_width, window_height, WINDOWNAME, NULL, NULL);
+  GLFWmonitor* primary = glfwGetPrimaryMonitor();
+  if (fullScreen) {
+    window = glfwCreateWindow( window_width, window_height, WINDOWNAME, primary, NULL);
+  } else {
+    window = glfwCreateWindow( window_width, window_height, WINDOWNAME, NULL, NULL);
+  }
   if( window == NULL ){
     fprintf( stderr, "Failed to open GLFW window.\n" );
     glfwTerminate();
@@ -202,6 +221,12 @@ int Renderer::initGL() {
   //glEnable(GL_DEPTH_TEST);
   // Accept fragment if it closer to the camera than the former one
   //glDepthFunc(GL_LESS);
+
+  #ifndef __APPLE__
+		// Since apple does this automatically. This will cause some bugs where the viewport gets very small.
+		// Set the glViewport to the width and height of the window.
+		glViewport(0, 0, window_width, window_height);
+	#endif
 
   // Cull triangles which normal is not towards the camera
   glEnable(GL_CULL_FACE);

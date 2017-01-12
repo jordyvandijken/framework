@@ -56,8 +56,5 @@ target_link_libraries(GLEW_190
 )
 
 
-### GLEW ###
-
-add_subdirectory(lpng1626)
 
 

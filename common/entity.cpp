@@ -2,11 +2,13 @@
 
 int Entity::_nextNum = 0;
 
-Entity::Entity(){
+Entity::Entity(float x, float y){
+  _modelMatrix = glm::mat4(1.0f);
+
   _entityNum = _nextNum;
   _nextNum++;
 
-  position = glm::vec2(0.0f,0.0f);
+  position = glm::vec2(x,y);
   scale = glm::vec2(1.0f,1.0f);
   rotation = 0.0f;
 
@@ -16,9 +18,21 @@ Entity::Entity(){
   sprite = NULL;
 }
 
+glm::mat4 Entity::getParentModelMatrix() {
+  if (parent != NULL) {
+    return this->parent->_modelMatrix;
+  } else {
+    return glm::mat4(1.0f);
+  }
+}
+
+void Entity::setModelMatrix(glm::mat4 mm) {
+  _modelMatrix = mm;
+}
+
 void Entity::addSprite(Sprite* _sprite) {
   if (_sprite != NULL) {
-    if (sprite != NULL) {
+    if (sprite == NULL) {
       sprite = _sprite;
     } else {
       delete sprite;

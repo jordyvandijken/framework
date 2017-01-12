@@ -16,15 +16,16 @@
 #define SWIDTH 1280 ///< The screen width
 #define SHEIGHT 720 ///< The screen height
 
-#define FULLSCREEN 0 ///< Fullscreen or not
+#define FULLSCREEN false ///< Fullscreen or not
 
-#define WINDOWNAME "Test ding" ///< The window name
+#define WINDOWNAME "Dickbutt" ///< The window name
 
 #define SPRITEVERTEXSHADER "shaders/sprite.vert" ///< vertexshader name
 #define SPRITEFRAGMENTSHADER "shaders/sprite.frag" ///< fragmentshader name
 
 #define VSYNC 0 ///< VSYNC on (1) or off (0)
 
-
+#define RADTODEG 57.2957795 ///< radians to degrees
+#define DEGTORAD 0.0174532925 ///< degrees to radians
 
 #endif /* CONFIG_H */

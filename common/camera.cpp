@@ -11,6 +11,7 @@ using namespace glm;
 Camera::Camera() {
 	// Initial position : on +Z
 	position = glm::vec3( 0, 0, 5 );
+
 }
 
 glm::mat4 Camera::getViewMatrix() {
