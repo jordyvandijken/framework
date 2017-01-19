@@ -5,15 +5,20 @@ Sprite::Sprite(std::string image_path, int sprite_width, int sprite_height) {
   // A sprite has 1 face (quad) with 2 triangles each, so this makes 1*2=2 triangles, and 2*3 vertices
   texture = loadTGA(image_path.c_str());
 
+	_width = sprite_width;
+	_height = sprite_height;
 
 	static const GLfloat g_vertex_buffer_data[18] = {
+
+    -0.5f * sprite_width,  0.5f * sprite_height, 0.0f,
+     0.5f * sprite_width,  0.5f * sprite_height, 0.0f,
+     0.5f * sprite_width, -0.5f * sprite_height, 0.0f,
+
 		 0.5f * sprite_width, -0.5f * sprite_height, 0.0f,
 		-0.5f * sprite_width, -0.5f * sprite_height, 0.0f,
-		-0.5f * sprite_width,  0.5f * sprite_height, 0.0f,
+		-0.5f * sprite_width,  0.5f * sprite_height, 0.0f
 
-		-0.5f * sprite_width,  0.5f * sprite_height, 0.0f,
-		 0.5f * sprite_width,  0.5f * sprite_height, 0.0f,
-		 0.5f * sprite_width, -0.5f * sprite_height, 0.0f
+
 	};
 
 	// Two UV coordinates for each vertex.
@@ -38,8 +43,6 @@ Sprite::Sprite(std::string image_path, int sprite_width, int sprite_height) {
 
 GLuint Sprite::loadTGA(const std::string& imagepath)
 {
-  //std::cout << "Loading TGA: " << imagepath << std::endl;
-
 	FILE *file;
 	unsigned char type[4];
 	unsigned char info[6];
@@ -47,7 +50,7 @@ GLuint Sprite::loadTGA(const std::string& imagepath)
 	file = fopen(imagepath.c_str(), "rb");
 
 	if (!file) {
-		std::cout << "error: unable to open file" << std::endl;
+		std::cout << "error: unable to open file: " << imagepath << std::endl;
 		return 0;
 	}
 
@@ -166,14 +169,11 @@ GLuint Sprite::loadTGA(const std::string& imagepath)
             break;
     }
 
-    //std::cout << "Done loading TGA" << '\n';
-
     // OpenGL has now copied the data. Free our own version
     delete [] data;
 
     // Return the ID of the texture we just created
     return textureID;
-
 }
 
 Sprite::~Sprite(){

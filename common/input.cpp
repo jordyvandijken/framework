@@ -9,6 +9,7 @@
 #include <iostream>
 #include <common/input.h>
 
+Input* Input::instance = NULL;
 Input::Input()
 {
 	_window = NULL;
@@ -31,11 +32,14 @@ Input::Input()
 	cursor = glm::vec3(0, 0, 0);
 }
 
-glm::vec3 Input::getCursor(){
-	return cursor;
+Input* Input::getInstance() {
+	if (!instance) {
+		Input::instance = new Input();
+	}
+	return Input::instance;
 }
 
-void Input::updateInput(GLFWwindow* w ,Camera* c) {
+void Input::_updateInput(GLFWwindow* w ,Camera* c) {
 	_window = w;
 
 	glfwPollEvents();
@@ -46,12 +50,8 @@ void Input::updateInput(GLFWwindow* w ,Camera* c) {
 	glfwGetCursorPos(_window, &_mouseX, &_mouseY);
 
 	// Fix cursor position if window size is different from the set resolution
-	cursor.x = ((float)SWIDTH / _windowWidth) * _mouseX;
-	cursor.y = ((float)SHEIGHT / _windowHeight) * _mouseY;
-
-	cursor.x += c->getPosition().x;
-	cursor.y += c->getPosition().y;
-
+	cursor.x = ((float)SWIDTH / _windowWidth) * _mouseX + c->getPosition().x;
+	cursor.y = ((float)SHEIGHT / _windowHeight) * _mouseY + c->getPosition().y;
 
 	// 32-97 = ' ' to '`'
 	int i;
@@ -72,21 +72,17 @@ void Input::updateInput(GLFWwindow* w ,Camera* c) {
 void Input::_handleMouse(int button)
 {
 	if (glfwGetMouseButton( _window, button ) == GLFW_PRESS) {
-		if (_mouse[button] == false) { // if first time pressed down
+		if (_mouse[button] == false) {
 			_mouse[button] = true;
 			_mouseDown[button] = true;
-			//std::cout << "DOWN: " << button << std::endl;
 		} else {
-			// not the first time this is pressed
-			// keys[button] is still true;
 			_mouseDown[button] = false;
 		}
 	}
 	if (glfwGetMouseButton( _window, button ) == GLFW_RELEASE) {
-		if (_mouse[button] == true) { // still pressed
+		if (_mouse[button] == true) {
 			_mouse[button] = false;
 			_mouseUp[button] = true;
-			//std::cout << "UP: " << button << std::endl;
 		} else {
 			_mouseUp[button] = false;
 		}
@@ -96,21 +92,17 @@ void Input::_handleMouse(int button)
 void Input::_handleKey(int key)
 {
 	if (glfwGetKey( _window, key ) == GLFW_PRESS) {
-		if (_keys[key] == false) { // if first time pressed down
+		if (_keys[key] == false) {
 			_keys[key] = true;
 			_keysDown[key] = true;
-			//std::cout << "DOWN: " << key << std::endl;
 		} else {
-			// not the first time this is pressed
-			// keys[key] is still true;
 			_keysDown[key] = false;
 		}
 	}
 	if (glfwGetKey( _window, key ) == GLFW_RELEASE) {
-		if (_keys[key] == true) { // still pressed
+		if (_keys[key] == true) {
 			_keys[key] = false;
 			_keysUp[key] = true;
-			//std::cout << "UP: " << key << std::endl;
 		} else {
 			_keysUp[key] = false;
 		}
@@ -118,5 +110,4 @@ void Input::_handleKey(int key)
 }
 
 Input::~Input() {
-
 }

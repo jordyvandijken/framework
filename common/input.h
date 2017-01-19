@@ -159,84 +159,92 @@
 #define 	MOUSE_BUTTON_RIGHT   GLFW_MOUSE_BUTTON_2
 #define 	MOUSE_BUTTON_MIDDLE   GLFW_MOUSE_BUTTON_3
 
-
 /// @brief The Input class handles Keyboard and Mouse.
 class Input
 {
 public:
-	Input(); ///< @brief Constructor of the Input
 	virtual ~Input(); ///< @brief Destructor of the Input
+
+	static void deleteInstance() { if(instance){ delete instance; }; }
 
 	/// @brief updates the input from Keyboard and Mouse.
 	/// @param[in] w GLFWwindow*
-	void updateInput(GLFWwindow* w, Camera* c);
+	static void updateInput(GLFWwindow* w, Camera* c) { getInstance()->_updateInput(w, c); }
+	void _updateInput(GLFWwindow* w, Camera* c);
 
 	// keys while down
 	/// @brief Is this key pressed?
 	/// @param key as int (see defines)
 	/// @return bool key is pressed or not
-	bool getKey(int key) { return _keys[key]; }
-	/// @brief Is this key pressed?
-	/// @param key as char (ie 'a')
-	/// @return bool key is pressed or not
-	bool getKey(char key) { return getKey((int) key); }
+	static bool getKey(int key) { return getInstance()->_getKey(key); }
+	bool _getKey(int key) {return _keys[key];}
 	/// @brief Is this mouse button pressed?
 	/// @param button num
 	/// @return bool button is pressed or not
-	bool getMouse(int button) { return _mouse[button]; }
+	static bool getMouse(int button) { return getInstance()->_getMouse(button); }
+	bool _getMouse(int button) { return _mouse[button]; }
 
 	// down
 	/// @brief Is this key pressed? Only check first press down
 	/// @param key as int (see defines)
 	/// @return bool key is pressed first time or not
-	bool getKeyDown(int key) { return _keysDown[key]; }
-	/// @brief Is this key pressed? Only check first press down
-	/// @param key as char (ie 'a')
-	/// @return bool key is pressed first time or not
-	bool getKeyDown(char key) { return getKeyDown((int) key); }
+	static bool getKeyDown(int key) { return getInstance()->_getKeyDown(key); }
+	bool _getKeyDown(int key) { return _keysDown[key]; }
 	/// @brief Is this mouse button pressed? Only check first press down
 	/// @param button num
 	/// @return bool button is pressed or not
-	bool getMouseDown(int button) { return _mouseDown[button]; }
+	bool getMouseDown(int button) { return getInstance()->_getMouseDown(button); }
+	bool _getMouseDown(int button) { return _mouseDown[button]; }
 
 	// up
 	/// @brief Is this key released?
 	/// @param key as int (see defines)
 	/// @return bool true or false
-	bool getKeyUp(int key) { return _keysUp[key]; }
-	/// @brief Is this key released?
-	/// @param key as char (ie 'a')
-	/// @return bool key is released or not
-	bool getKeyUp(char key) { return getKeyUp((int) key); }
+	static bool getKeyUp(int key) { return getInstance()->_getKeyUp(key); }
+	bool _getKeyUp(int key) { return _keysUp[key]; }
 	/// @brief Is this mouse button released?
 	/// @param button num
 	/// @return bool button is released or not
-	bool getMouseUp(int button) { return _mouseUp[button]; }
+	static bool getMouseUp(int button) { return getInstance()->_getMouseUp(button); }
+	bool _getMouseUp(int button) { return _mouseUp[button]; }
 
 	// mouse
 	/// @brief get X position of the Mouse
 	/// @return _mouseX as double
-	double getMouseX() { return _mouseX; }
+	static double getMouseX() { return getInstance()->_getMouseX(); }
+	double _getMouseX() { return _mouseX; }
 	/// @brief get Y position of the Mouse
 	/// @return _mouseY as double
-	double getMouseY() { return _mouseY; }
+	static double getMouseY() { return getInstance()->_getMouseY(); }
+	double _getMouseY() { return _mouseY; }
 	/// @brief get mouse pos
-	glm::vec3 getCursor();
+	static glm::vec2 getCursor() {	return getInstance()->_getCursor(); }
+	glm::vec2 _getCursor() {	return glm::vec2(cursor.x, cursor.y); }
 	/// @brief Set Mouse cursor to a certain position
 	/// @param[in] x The X position
 	/// @param[in] y The Y position
 	/// @return void
-	void setMouse(double x, double y) { glfwSetCursorPos(_window, x, y); };
+	static void setMouse(double x, double y) { getInstance()->_setMouse(x, y); }
+	void _setMouse(double x, double y) { glfwSetCursorPos(_window, x, y); }
 
 	// window size
 	/// @brief get width of the window
 	/// @return _windowWidth as int
-	int getWindowWidth() { return _windowWidth; }
+	static int getWindowWidth() { return getInstance()->_getWindowWidth(); }
+	int _getWindowWidth() { return _windowWidth; }
 	/// @brief get height of the window
 	/// @return _windowHeight as int
-	int getWindowHeight() { return _windowHeight; }
+	static int getWindowHeight() { return getInstance()->_getWindowHeight(); }
+	int _getWindowHeight() { return _windowHeight; }
+
+	static Input* getInstance();
 
 private:
+
+	Input(); ///< @brief Constructor of the Input
+
+	static Input* instance;
+
 	GLFWwindow* _window; ///< @brief GLFWwindow* _window
 
 	void _handleKey(int key); ///< @brief update internal array of keys

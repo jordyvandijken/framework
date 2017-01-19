@@ -104,11 +104,16 @@ public:
 
 	glm::mat4 getParentModelMatrix();
 
-	void setWorldPos(glm::vec2 wp) {
-		worldpos = wp;
-	};
+	void setWorldPos(glm::vec2 wp) {worldpos = wp;};
 
 	glm::vec2 getWorldPosition() {return worldpos;};
+
+	int getWidth() {if (sprite != NULL) {return sprite->getWidth() * scale.x;} else {return 1;};};
+
+	int getHeight() {if (sprite != NULL) {return sprite->getHeight() * scale.y;} else {return 1;};};
+
+	float getRad() {return rotation * DEGTORAD;};
+
 private:
 	Sprite* sprite;  ///< @brief sprite of the Entity
 

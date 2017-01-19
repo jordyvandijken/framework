@@ -15,9 +15,12 @@
 // Include GLEW
 #include <GL/glew.h>
 
+#include <vector>
+
 #include <common/camera.h>
 #include <common/entity.h>
 #include <common/input.h>
+#include <common/resourcemanager.h>
 
 /// @brief The Scene class is the Base class for your own Scenes. It has a Camera and Input.
 class Scene {
@@ -40,7 +43,7 @@ public:
 
 	Camera* camera; ///< @brief camera instance
 
-	Input* input;  ///< @brief input instance
+	ResourceManager* resManager;
 
 private:
 

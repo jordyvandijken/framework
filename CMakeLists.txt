@@ -4,6 +4,9 @@ project (RT2D)
 
 find_package(OpenGL REQUIRED)
 
+OPTION(USE_OPENAL "Use OpenAL" OFF)
+OPTION(MAKE_AUDIOSTART "Make OpenAL/RT2D audiostart" OFF)
+OPTION(MAKE_OPENAL_TONEGEN "Make OpenAL Tone Generator" OFF)
 
 if( CMAKE_BINARY_DIR STREQUAL CMAKE_SOURCE_DIR )
     message( FATAL_ERROR "Please select another Build Directory ! (and give it a clever name, like 'build')" )
@@ -64,13 +67,13 @@ add_executable(demo
   demo/scene4.h
   demo/player.cpp
   demo/player.h
+  common/audio.h
+  common/audio.cpp
   common/config.h
 	common/shader.cpp
   common/shader.h
 	common/camera.cpp
 	common/camera.h
-  common/texture.cpp
-	common/texture.h
   common/renderer.cpp
   common/renderer.h
   common/sprite.cpp
@@ -83,9 +86,46 @@ add_executable(demo
   common/core.h
   common/input.cpp
   common/input.h
+  common/resourcemanager.cpp
+  common/resourcemanager.h
 )
+
+
+####################################################################
+# OpenAL                                                           #
+####################################################################
+	add_subdirectory (external/openal)
+	include_directories(
+		${CMAKE_SOURCE_DIR}/external/openal/include/
+	)
+
+	link_directories(
+		${CMAKE_SOURCE_DIR}/external/openal/
+	)
+
+	IF(WIN32)
+		SET(OPENAL OpenAL32)
+	ELSE()
+		SET(OPENAL openal)
+	ENDIF()
+
+####################################################################
+# OpenAL tone generator                                            #
+####################################################################
+IF(MAKE_OPENAL_TONEGEN AND USE_OPENAL)
+	add_executable(altonegenrt
+		external/openal/examples/altonegen.c
+		external/openal/examples/common/alhelpers.c
+	)
+	target_link_libraries(altonegenrt
+		${OPENAL}
+	)
+ENDIF()
+####################################################################
+
 target_link_libraries(demo
 	${ALL_LIBS}
+  ${OPENAL}
 )
 # Xcode and Visual working directories
 set_target_properties(demo PROPERTIES XCODE_ATTRIBUTE_CONFIGURATION_BUILD_DIR "${CMAKE_CURRENT_SOURCE_DIR}/demo/")

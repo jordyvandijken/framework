@@ -53,10 +53,17 @@ public:
 	/// @return GLuint - return texture
 	GLuint loadTGA(const std::string& imagepath);
 
+	int getWidth() {return _width;};
+
+	int getHeight() {return _height;};
+
 private:
 	GLuint vertexbuffer; ///< @brief vertexbuffer
 	GLuint uvbuffer; ///< @brief uvbuffer
 	GLuint texture; ///< @brief texture
+
+	int _width;
+	int _height;
 };
 
 #endif /* CAMERA_H */

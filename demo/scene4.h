@@ -12,7 +12,7 @@ public:
 	void update(float deltaTime);
 
 private:
-   std::vector<Entity*> entitiesList;
+	std::vector<Entity*> entitiesList;
 };
 
 #endif

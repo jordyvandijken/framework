@@ -4,7 +4,6 @@ Scene::Scene(){
   srand (time(NULL));
 
   camera = new Camera();
-  input = new Input();
 }
 
 void Scene::addEntity(Entity* _entity) {
@@ -12,19 +11,13 @@ void Scene::addEntity(Entity* _entity) {
 }
 
 Scene::~Scene(){
-  delete camera;
-  delete input;
+  if (camera) {
+    delete camera;
+  }
 
-  if (entities.size() > 1) {
-    for(int i = 0; i <= entities.size(); i++) {
-      Entity* p = entities[i];
-      delete p;
-      entities.erase (entities.begin() + i);
-    }
-  }
-  if (entities.size() == 1) {
-    Entity* p = entities[0];
-    delete p;
-    entities.erase (entities.begin());
-  }
+  std::vector<Entity*>::iterator it = entities.begin();
+	while (it != entities.end()) {
+		delete (*it);
+		it = entities.erase(it);
+	}
 }

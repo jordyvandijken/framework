@@ -30,7 +30,6 @@
 using namespace glm;
 
 #include <common/shader.h>
-#include <common/texture.h>
 #include <common/scene.h>
 #include <common/config.h>
 
@@ -68,6 +67,8 @@ public:
 	/// @return bool - need to quit (true / false)
 	bool mustQuit();
 
+	bool _debug;
+
 private:
 	Scene* scene; ///< @brief instance of renderer
 
@@ -95,6 +96,9 @@ private:
 	/// @brief swaps buffers.
 	/// @return void
 	void swapBuffers();
+
+	bool testCulling(Entity* _entity);
+
 };
 
 #endif /* RENDERER_H */

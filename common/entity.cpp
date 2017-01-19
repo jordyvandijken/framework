@@ -73,7 +73,9 @@ void Entity::setPosition(glm::vec2 _pos){
 }
 
 Entity::~Entity(){
-  if (sprite != NULL) {
-    delete sprite;
-  }
+    std::vector<Entity*>::iterator it = children.begin();
+    while (it != children.end()) {
+      delete (*it);
+      it = children.erase(it);
+    }
 }

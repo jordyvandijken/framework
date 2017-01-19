@@ -19,12 +19,6 @@ Renderer::Renderer(){
   this->initGL();
 }
 
-Renderer::~Renderer(){
-  // Cleanup VBO and shader
-  glDeleteProgram(programID);
-  glDeleteTextures(1, &textureID);
-}
-
 void Renderer::run(Scene* _scene, float deltaTime){
   scene = _scene;
   if (scene != NULL){
@@ -40,7 +34,7 @@ void Renderer::run(Scene* _scene, float deltaTime){
 
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    scene->input->updateInput(window, scene->camera);
+    Input::updateInput(window, scene->camera);
     scene->update(deltaTime);
 
     std::vector<Entity*> entities = scene->getEntities();
@@ -85,7 +79,7 @@ void Renderer::renderEntity(glm::mat4 &modelMatrix, Entity* _entity){  // Comput
 	// send the real world position after these transforms back to Entity->worldpos
 	_entity->setWorldPos(glm::vec2(realpos.x, realpos.y));
 
-
+  if (testCulling(_entity)) {
   // create a MVP
   glm::mat4 MVP = projectionMatrix * viewMatrix * modelMatrix;
 
@@ -130,6 +124,7 @@ void Renderer::renderEntity(glm::mat4 &modelMatrix, Entity* _entity){  // Comput
 
   glDisableVertexAttribArray(vertexPosition_modelspaceID);
   glDisableVertexAttribArray(vertexUVID);
+  }
 
   // Render all Children (recursively)
 	std::vector<Entity*> children = _entity->getChildren();
@@ -144,9 +139,8 @@ void Renderer::renderEntity(glm::mat4 &modelMatrix, Entity* _entity){  // Comput
 
 glm::mat4 Renderer::getModelMatrix(Entity* _entity) {
   // Build the Model matrix
-  float rot = _entity->rotation * DEGTORAD;
   glm::mat4 translationMatrix    = glm::translate(glm::mat4(1.0f), glm::vec3(_entity->position.x, _entity->position.y, 0.0f));
-  glm::mat4 rotationMatrix       = glm::eulerAngleYXZ(0.0f, 0.0f, rot);
+  glm::mat4 rotationMatrix       = glm::eulerAngleYXZ(0.0f, 0.0f, _entity->getRad());
   glm::mat4 scalingMatrix        = glm::scale(glm::mat4(1.0f), glm::vec3(_entity->scale.x, _entity->scale.y, 1.0f));
 
   // create modelMatrix
@@ -172,6 +166,16 @@ void Renderer::setScreenSize(int _sWidth, int _sHeight, bool _wanted_fullSreen){
 void Renderer::swapBuffers() {
   // Swap buffers at last
   glfwSwapBuffers(window);
+}
+
+bool Renderer::testCulling(Entity* _entity) {
+  if (_entity->getWorldPosition().x + _entity->getWidth()/2 < -100 + scene->camera->getPosition().x + 200 * DEBUG || _entity->getWorldPosition().x - _entity->getWidth()/2 >  100 + SWIDTH + scene->camera->getPosition().x - 200 * DEBUG ) {
+    return false;
+  }
+  if (_entity->getWorldPosition().y + _entity->getHeight()/2 < -100 + scene->camera->getPosition().y + 200 * DEBUG || _entity->getWorldPosition().y - _entity->getHeight()/2 > 100 + SHEIGHT + scene->camera->getPosition().y - 200 * DEBUG ) {
+    return false;
+  }
+  return true;
 }
 
 int Renderer::initGL() {
@@ -217,11 +221,6 @@ int Renderer::initGL() {
   // Dark blue background
   glClearColor(0.0f, 0.0f, 0.4f, 0.0f);
 
-  // Enable depth test
-  //glEnable(GL_DEPTH_TEST);
-  // Accept fragment if it closer to the camera than the former one
-  //glDepthFunc(GL_LESS);
-
   #ifndef __APPLE__
 		// Since apple does this automatically. This will cause some bugs where the viewport gets very small.
 		// Set the glViewport to the width and height of the window.
@@ -233,7 +232,7 @@ int Renderer::initGL() {
 
   // Create and compile our GLSL program from the shaders
   // see: shader.h/cpp
-  programID = LoadShaders(vertex_shader.c_str(), fragment_shader.c_str());
+  programID = loadShaders(vertex_shader.c_str(), fragment_shader.c_str());
 
   // Get a handle for our buffers
   vertexPosition_modelspaceID = glGetAttribLocation(programID, "vertexPosition_modelspace");
@@ -255,3 +254,9 @@ int Renderer::initGL() {
 bool Renderer::mustQuit(){
   return (glfwGetKey(window, GLFW_KEY_ESCAPE ) == GLFW_PRESS || glfwWindowShouldClose(window));
 }// quit
+
+Renderer::~Renderer(){
+  // Cleanup VBO and shader
+  glDeleteProgram(programID);
+  glDeleteTextures(1, &textureID);
+}

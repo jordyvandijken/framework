@@ -17,6 +17,7 @@ int main( void )
 {
 	std::vector<Scene*> scenes;
 	Core* core = new Core();
+
 	Scene1* scene1 = new Scene1();
 	Scene2* scene2 = new Scene2();
 	Scene3* scene3 = new Scene3();
@@ -27,9 +28,17 @@ int main( void )
 	scenes.push_back(scene4);
 	// show what scene
 	int showScene = 3;
+	if (!FULLSCREEN) {
+		std::cout << "Show scene: " << std::flush;
+		std::cin >> showScene;
+		showScene--;
+		if (showScene < 0 && showScene > scenes.size() - 1){
+			showScene = 0;
+		}
+	}
 
 	// need to show fps in console
-	core->setShowFps(true);
+	core->setShowFps(SHOWFPS);
 
 	do {
 		core->runScene(scenes[showScene]);
@@ -42,6 +51,9 @@ int main( void )
 	delete scene4;
 	delete core;
 	// Close OpenGL window and terminate GLFW
+	Input::deleteInstance();
+	ResourceManager::deleteInstance();
+
 	glfwTerminate();
 
 	return 0;
