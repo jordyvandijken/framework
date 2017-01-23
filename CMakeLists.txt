@@ -67,8 +67,12 @@ add_executable(demo
   demo/scene4.h
   demo/player.cpp
   demo/player.h
-  common/audio.h
   common/audio.cpp
+  common/audio.h
+  common/sound.cpp
+  common/sound.h
+  common/wav.cpp
+  common/wav.h
   common/config.h
 	common/shader.cpp
   common/shader.h

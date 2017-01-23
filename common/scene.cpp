@@ -4,6 +4,7 @@ Scene::Scene(){
   srand (time(NULL));
 
   camera = new Camera();
+
 }
 
 void Scene::addEntity(Entity* _entity) {

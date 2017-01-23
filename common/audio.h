@@ -4,14 +4,19 @@
 #include <AL/al.h>
 #include <AL/alc.h>
 
+#include <iostream>
+
 class Audio
 {
 public:
 	Audio();
 	virtual ~Audio();
+	static void init();
 
-private:
-	ALvoid* buffer;
+  static void closeAudio();
+protected:
+		static ALCdevice *device;
+		static ALCcontext *context;
 
 };
 

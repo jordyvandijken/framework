@@ -32,4 +32,7 @@
 
 #define SHOWFPS true ///< show fps in console
 
+#define STANDARDSPRITEWIDTH 128  ///< in pixels
+#define STANDARDSPRITEHEIGHT 128  ///< in pixels
+
 #endif /* CONFIG_H */

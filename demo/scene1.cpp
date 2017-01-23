@@ -42,6 +42,12 @@ Scene1::Scene1(){
   addEntity(_test);
   addEntity(_test2);
 
+  Audio::init();
+
+  s = new Sound("assets/pol.wav", true);
+
+  click = new Sound("assets/mouse-click.wav");
+
   std::cout << "scene1 is a simple scene" << '\n';
 }
 
@@ -49,6 +55,17 @@ void Scene1::update(float deltaTime){
   float	speed = 300.0f; // 300 units / second
 
   test->position = Input::getCursor();
+
+  if (Input::getMouseDown(MOUSE_BUTTON_1)) {
+    click->play();
+  }
+
+  if (Input::getKeyDown(KEY_A)) {
+    s->play();
+  }
+  if (Input::getKeyDown(KEY_D)) {
+	   s->stop();
+  }
 
   // Move up
   if (Input::getKey(KEY_UP)){
@@ -69,5 +86,5 @@ void Scene1::update(float deltaTime){
 }
 
 Scene1::~Scene1(){
-
+  Audio::closeAudio();
 }

@@ -1,9 +1,8 @@
 /**
- * This file is part of RT2D, a 2D OpenGL framework.
+ * This file is part of a 2D OpenGL framework.
  *
- * - Copyright 2015 Rik Teerling <rik@onandoffables.com>
+ * - Copyright 2015 Jordy van Dijken <jordyvandijken@gmail.com>
  *   - Initial commit
- *   - <meruiden> scaling of window
  */
 
 #include <iostream>

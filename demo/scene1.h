@@ -2,8 +2,6 @@
 #define SCENE1_H
 
 #include <common/scene.h>
-#include <common/entity.h>
-#include <common/audio.h>
 
 class Scene1 : public Scene
 {
@@ -15,10 +13,11 @@ public:
 private:
 		Entity* test;
 
-		Audio* audio;
-
 		bool flip;
 		bool _flip;
+
+		Sound* s;
+		Sound* click;
 };
 
 #endif

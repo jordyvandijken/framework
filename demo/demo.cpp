@@ -27,20 +27,17 @@ int main( void )
 	scenes.push_back(scene3);
 	scenes.push_back(scene4);
 	// show what scene
-	int showScene = 3;
-	if (!FULLSCREEN) {
-		std::cout << "Show scene: " << std::flush;
-		std::cin >> showScene;
-		showScene--;
-		if (showScene < 0 && showScene > scenes.size() - 1){
-			showScene = 0;
-		}
-	}
+	int showScene = 0;
 
 	// need to show fps in console
 	core->setShowFps(SHOWFPS);
 
 	do {
+		if (Input::getKeyUp(KEY_LEFT_BRACKET)) {showScene--; };
+		if (Input::getKeyUp(KEY_RIGHT_BRACKET)) {showScene++; };
+		if (showScene < 0) { showScene = scenes.size()-1;};
+		if (showScene > scenes.size()-1) { showScene = 0;};
+
 		core->runScene(scenes[showScene]);
 	} // Check if the ESC key was pressed or the window was closed
 	while(!core->mustQuit());

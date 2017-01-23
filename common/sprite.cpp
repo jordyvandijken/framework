@@ -9,27 +9,24 @@ Sprite::Sprite(std::string image_path, int sprite_width, int sprite_height) {
 	_height = sprite_height;
 
 	static const GLfloat g_vertex_buffer_data[18] = {
+    0.5f * sprite_width, -0.5f * sprite_height, 0.0f,
+   -0.5f * sprite_width, -0.5f * sprite_height, 0.0f,
+   -0.5f * sprite_width,  0.5f * sprite_height, 0.0f,
 
     -0.5f * sprite_width,  0.5f * sprite_height, 0.0f,
      0.5f * sprite_width,  0.5f * sprite_height, 0.0f,
-     0.5f * sprite_width, -0.5f * sprite_height, 0.0f,
-
-		 0.5f * sprite_width, -0.5f * sprite_height, 0.0f,
-		-0.5f * sprite_width, -0.5f * sprite_height, 0.0f,
-		-0.5f * sprite_width,  0.5f * sprite_height, 0.0f
-
-
+     0.5f * sprite_width, -0.5f * sprite_height, 0.0f
 	};
 
 	// Two UV coordinates for each vertex.
 	static const GLfloat g_uv_buffer_data[12] = {
-		1.0f, 0.0f,
-		0.0f, 0.0f,
-		0.0f, 1.0f,
-
-		0.0f, 1.0f,
 		1.0f, 1.0f,
-		1.0f, 0.0f
+		0.0f, 1.0f,
+		0.0f, 0.0f,
+
+		0.0f, 0.0f,
+		1.0f, 0.0f,
+		1.0f, 1.0f
 	};
 
 	glGenBuffers(1, &vertexbuffer);

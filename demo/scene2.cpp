@@ -5,8 +5,8 @@ Scene2::Scene2() {
   player->addSprite(ResourceManager::getSprite("assets/lel.tga", 128,128));
   player->setPosition(400,400);
 
-  int intX = 80;
-  int intY = 80;
+  int intX = 300;
+  int intY = 300;
   for (int q = 0; q < intX; q++) {
     for (int w = 0; w < intY; w++) {
       Entity* t = new Entity(128 * q, 128 * w);

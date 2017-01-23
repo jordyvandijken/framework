@@ -193,7 +193,7 @@ public:
 	/// @brief Is this mouse button pressed? Only check first press down
 	/// @param button num
 	/// @return bool button is pressed or not
-	bool getMouseDown(int button) { return getInstance()->_getMouseDown(button); }
+	static bool getMouseDown(int button) { return getInstance()->_getMouseDown(button); }
 	bool _getMouseDown(int button) { return _mouseDown[button]; }
 
 	// up

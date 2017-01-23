@@ -31,20 +31,21 @@ class ResourceManager
 public:
 	virtual ~ResourceManager(); ///< @brief Destructor of the ResourceManager
 	static void deleteInstance() { if(instance){ delete instance; }; } ///< @brief delete this instance
-	/// @brief get a Texture
+	/// @brief get a Sprite
 	/// @param filename the path to the TGA file
-	/// @param filter the filtering of the Texture
-	/// @param wrap the UV wrapping of the Texture
+	/// @param width in pixels (has a standard width in config)
+	/// @param height in pixels (has a standard height in config)
 	/// @return Sprite* a pointer to a Sprite, created from an image file (.tga only).
-	static Sprite* getSprite(const std::string& filename, int _sprite_width = 128, int _sprite_height = 128) { return getInstance()->_getSprite(filename, _sprite_width, _sprite_height); };
-	Sprite* _getSprite(const std::string& filename, int _sprite_width = 128, int _sprite_height = 128);
-
+	static Sprite* getSprite(const std::string& filename, int _sprite_width = STANDARDSPRITEWIDTH, int _sprite_height = STANDARDSPRITEHEIGHT) { return getInstance()->_getSprite(filename, _sprite_width, _sprite_height); };
+	Sprite* _getSprite(const std::string& filename, int _sprite_width = STANDARDSPRITEWIDTH, int _sprite_height = STANDARDSPRITEHEIGHT);
+	/// @brief Get ResourceManager
+	/// @return ResourceManager* a pointer to ResourceManager
 	static ResourceManager* getInstance();
 
 private:
 	ResourceManager(); ///< @brief Constructor of the ResourceManager
 
-	static ResourceManager* instance;
+	static ResourceManager* instance; ///< @brief the instance ResourceManager of ResourceManager
 
 	/// @brief delete a Sprite from memory
 	/// @param filename the name this Sprite is known by
@@ -53,7 +54,6 @@ private:
 	/// @brief clean up resources
 	/// @return void
 	void cleanUp();
-
 
 	std::map<std::string, Sprite*> _sprites; ///< @brief a map of sprites
 };
