@@ -20,6 +20,7 @@
 
 #include <common/config.h>
 #include <common/camera.h>
+#include <common/vector2.h>
 
 #define 	GLFW_KEY_UNKNOWN   -1
 #define 	KEY_SPACE   GLFW_KEY_SPACE
@@ -218,8 +219,8 @@ public:
 	static double getMouseY() { return getInstance()->_getMouseY(); }
 	double _getMouseY() { return _mouseY; }
 	/// @brief get mouse pos
-	static glm::vec2 getCursor() {	return getInstance()->_getCursor(); }
-	glm::vec2 _getCursor() {	return glm::vec2(cursor.x, cursor.y); }
+	static Vector2 getCursor() {	return getInstance()->_getCursor(); }
+	Vector2 _getCursor() {	return Vector2(cursor.x, cursor.y); }
 	/// @brief Set Mouse cursor to a certain position
 	/// @param[in] x The X position
 	/// @param[in] y The Y position

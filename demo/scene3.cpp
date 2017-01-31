@@ -3,28 +3,27 @@
 Scene3::Scene3(){
   //test
   test = new Entity();
-  test->addSprite(ResourceManager::getSprite("assets/brug.tga",128,128));
+  test->addSprite(ResourceManager::getSprite("assets/brug.tga"));
+  test->scaleToSize(128,128);
   // _test3
-  _test3 = new Entity(100.0f, 100.0f);
-  _test3->addSprite(ResourceManager::getSprite("assets/spritesheet.tga",128,128));
+  _test3 = new Entity(400.0f, 400.0f);
+  _test3->addSprite(ResourceManager::getSprite("assets/spritesheet.tga"));
   // _test4
-  _test4 = new Entity(50.0f, 50.0f);
-  _test4->addSprite(ResourceManager::getSprite("assets/default.tga",128,128));
-  _test4->scale = glm::vec2(0.5f,0.5f);
+  _test4 = new Entity(200.0f, 200.0f);
+  _test4->addSprite(ResourceManager::getSprite("assets/default.tga"));
+  _test4->scale = Vector2(0.5f,0.5f);
   // _test5
-  _test5 = new Entity(-50.0f, -50.0f);
-  _test5->addSprite(ResourceManager::getSprite("assets/brug.tga",128,128));
-  _test5->scale = glm::vec2(0.5f,0.5f);
-
+  _test5 = new Entity(-200.0f, -200.0f);
+  _test5->addSprite(ResourceManager::getSprite("assets/brug.tga"));
+  _test5->scale = Vector2(0.5f,0.5f);
   // _test6
-  _test6 = new Entity(-50.0f, 50.0f);
-  _test6->addSprite(ResourceManager::getSprite("assets/spritesheet.tga",128,128));
-  _test6->scale = glm::vec2(0.5f,0.5f);
-
+  _test6 = new Entity(-200.0f, 200.0f);
+  _test6->addSprite(ResourceManager::getSprite("assets/spritesheet.tga"));
+  _test6->scale = Vector2(0.5f,0.5f);
   // _test7
-  _test7 = new Entity(-50.0f, 50.0f);
-  _test7->addSprite(ResourceManager::getSprite("assets/spritesheet.tga",128,128));
-  _test7->scale = glm::vec2(0.5f,0.5f);
+  _test7 = new Entity(-200.0f, 200.0f);
+  _test7->addSprite(ResourceManager::getSprite("assets/spritesheet.tga"));
+  _test7->scale = Vector2(0.5f,0.5f);
 
   test->addChild(_test3);
   _test3->rotation = 90.0;
@@ -35,7 +34,7 @@ Scene3::Scene3(){
 
   test->layer = 0;
 
-  addEntity(test);
+  addChild(test);
 
   std::cout << "scene3 is parent child test" << '\n';
 }

@@ -47,7 +47,7 @@ public:
 	/// @param glm::mat4 modelMatrix
 	/// @param Entity* entity
 	/// @return void
-	void renderEntity(glm::mat4 &modelMatrix, Entity* entity);
+	void renderEntity(glm::mat4 modelMatrix, Entity* entity);
 	/// @brief set screen size.
 	/// @param int width
 	/// @param int height
@@ -55,8 +55,8 @@ public:
 	/// @return void
 	void setScreenSize(int _sWidth, int _sHeight,bool _wanted_fullScreen);
 	/// @brief calculate the model matrix.
-	/// @param glm::vec2 position
-	/// @param glm::vec2 scale
+	/// @param Vector2 position
+	/// @param Vector2 scale
 	/// @param float rotation
 	/// @return glm::mat4 - return modelMatrix
 	glm::mat4 getModelMatrix(Entity* _entity);

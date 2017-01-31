@@ -37,7 +37,7 @@ public:
 	/// @param std::string image path
 	/// @param int sprite width
 	/// @param int sprite height
-	Sprite(std::string image_path, int sprite_width, int sprite_height);
+	Sprite(std::string image_path, int filter = 0);
 	virtual ~Sprite(); ///< @brief Destructor of the Camera
 	/// @brief get Vertexbuffer.
 	/// @return GLuint - return vertexbuffer
@@ -50,8 +50,8 @@ public:
 	GLuint getTexture() {return texture;};
 	/// @brief load tga.
 	/// @param std::string image path
-	/// @return GLuint - return texture
-	GLuint loadTGA(const std::string& imagepath);
+	/// @return void
+	void loadTGA(const std::string& imagepath, int filter = 0);
 
 	int getWidth() {return _width;};
 
@@ -66,4 +66,4 @@ private:
 	int _height;
 };
 
-#endif /* CAMERA_H */
+#endif /* SPRITE_H */

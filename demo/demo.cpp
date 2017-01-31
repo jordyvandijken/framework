@@ -12,6 +12,7 @@
 #include "scene2.h"
 #include "scene3.h"
 #include "scene4.h"
+#include "scene5.h"
 
 int main( void )
 {
@@ -22,10 +23,12 @@ int main( void )
 	Scene2* scene2 = new Scene2();
 	Scene3* scene3 = new Scene3();
 	Scene4* scene4 = new Scene4();
+	Scene5* scene5 = new Scene5();
 	scenes.push_back(scene1);
 	scenes.push_back(scene2);
 	scenes.push_back(scene3);
 	scenes.push_back(scene4);
+	scenes.push_back(scene5);
 	// show what scene
 	int showScene = 0;
 
@@ -46,6 +49,7 @@ int main( void )
 	delete scene2;
 	delete scene3;
 	delete scene4;
+	delete scene5;
 	delete core;
 	// Close OpenGL window and terminate GLFW
 	Input::deleteInstance();

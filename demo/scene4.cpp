@@ -3,16 +3,18 @@
 Scene4::Scene4(){
   //test
   Entity* stand = new Entity(SWIDTH/2,SHEIGHT/2);
-  stand->addSprite(ResourceManager::getSprite("assets/doge.tga",128,128));
-  addEntity(stand);
+  stand->addSprite(ResourceManager::getSprite("assets/doge.tga"));
+  stand->scaleToSize(256, 256);
+
+  addChild(stand);
 
   entitiesList.push_back(stand);
   int amount = 100;
   for (int i = 0; i < amount; i++) {
     //test
     Entity* test = new Entity(151, 151);
-    test->addSprite(ResourceManager::getSprite("assets/doge.tga",128,128));
-    test->scale *= 0.89404;
+    test->addSprite(ResourceManager::getSprite("assets/doge.tga"));
+    test->scale = Vector2(0.89404f,0.89404f);
     entitiesList[i]->addChild(test);
     entitiesList.push_back(test);
   }

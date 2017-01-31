@@ -17,7 +17,8 @@ private:
 		bool _flip;
 
 		Sound* s;
-		Sound* click;
+		Sound* clickdown;
+		Sound* clickup;
 };
 
 #endif

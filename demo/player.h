@@ -11,7 +11,7 @@ public:
 
 	void update(float deltaTime);
 
-	void updatePos(glm::vec2 _pos);
+	void updatePos(Vector2 _pos);
 
 private:
 

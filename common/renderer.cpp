@@ -63,7 +63,7 @@ void Renderer::run(Scene* _scene, float deltaTime){
   }
 }
 
-void Renderer::renderEntity(glm::mat4 &modelMatrix, Entity* _entity){  // Compute the ViewMatrix from keyboard and mouse input (see: camera.h/cpp)
+void Renderer::renderEntity(glm::mat4 modelMatrix, Entity* _entity){  // Compute the ViewMatrix from keyboard and mouse input (see: camera.h/cpp)
   // Compute the ViewMatrix from keyboard and mouse input (see: camera.h/cpp)
   scene->camera->computeMatricesFromInputs(window);
 
@@ -72,69 +72,65 @@ void Renderer::renderEntity(glm::mat4 &modelMatrix, Entity* _entity){  // Comput
 
   // get the modelMatrix
   modelMatrix *= getModelMatrix(_entity);
-  // give the entity its modelMatrix
-  _entity->setModelMatrix(modelMatrix);
   // fill _worldpos in Entity
 	glm::vec4 realpos = modelMatrix * glm::vec4(0,0,0,1);
 	// send the real world position after these transforms back to Entity->worldpos
-	_entity->setWorldPos(glm::vec2(realpos.x, realpos.y));
+	_entity->setWorldPos(Vector2(realpos.x, realpos.y));
 
-  if (testCulling(_entity)) {
-  // create a MVP
-  glm::mat4 MVP = projectionMatrix * viewMatrix * modelMatrix;
+      if (_entity->getSprite() != NULL && testCulling(_entity)) {
+          // create a MVP
+          glm::mat4 MVP = projectionMatrix * viewMatrix * modelMatrix;
 
-  // Send our transformation to the currently bound shader,
-  // in the "MVP" uniform
-  glUniformMatrix4fv(matrixID, 1, GL_FALSE, &MVP[0][0]);
+          // Send our transformation to the currently bound shader,
+          // in the "MVP" uniform
+          glUniformMatrix4fv(matrixID, 1, GL_FALSE, &MVP[0][0]);
 
-  // Bind our texture in Texture Unit 0
-  glActiveTexture(GL_TEXTURE0);
-  glBindTexture(GL_TEXTURE_2D, _entity->getSprite()->getTexture());
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-  // Set our "myTextureSampler" sampler to user Texture Unit 0
-  glUniform1i(textureID, 0);
+          // Bind our texture in Texture Unit 0
+          glActiveTexture(GL_TEXTURE0);
+          glBindTexture(GL_TEXTURE_2D, _entity->getSprite()->getTexture());
+          glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+          glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+          // Set our "myTextureSampler" sampler to user Texture Unit 0
+          glUniform1i(textureID, 0);
 
-  // 1st attribute buffer : vertices
-  glEnableVertexAttribArray(vertexPosition_modelspaceID);
-  glBindBuffer(GL_ARRAY_BUFFER, _entity->getSprite()->getVertexbuffer());
-  glVertexAttribPointer(
-    vertexPosition_modelspaceID,  // The attribute we want to configure
-    3,                            // size : x+y+z => 3
-    GL_FLOAT,                     // type
-    GL_FALSE,                     // normalized?
-    0,                            // stride
-    (void*)0                      // array buffer offset
-  );
+          // 1st attribute buffer : vertices
+          glEnableVertexAttribArray(vertexPosition_modelspaceID);
+          glBindBuffer(GL_ARRAY_BUFFER, _entity->getSprite()->getVertexbuffer());
+          glVertexAttribPointer(
+            vertexPosition_modelspaceID,  // The attribute we want to configure
+            3,                            // size : x+y+z => 3
+            GL_FLOAT,                     // type
+            GL_FALSE,                     // normalized?
+            0,                            // stride
+            (void*)0                      // array buffer offset
+          );
 
-  // 2nd attribute buffer : UVs
-  glEnableVertexAttribArray(vertexUVID);
-  glBindBuffer(GL_ARRAY_BUFFER, _entity->getSprite()->getUvbuffer());
-  glVertexAttribPointer(
-    vertexUVID,                   // The attribute we want to configure
-    2,                            // size : U+V => 2
-    GL_FLOAT,                     // type
-    GL_FALSE,                     // normalized?
-    0,                            // stride
-    (void*)0                      // array buffer offset
-  );
+          // 2nd attribute buffer : UVs
+          glEnableVertexAttribArray(vertexUVID);
+          glBindBuffer(GL_ARRAY_BUFFER, _entity->getSprite()->getUvbuffer());
+          glVertexAttribPointer(
+            vertexUVID,                   // The attribute we want to configure
+            2,                            // size : U+V => 2
+            GL_FLOAT,                     // type
+            GL_FALSE,                     // normalized?
+            0,                            // stride
+            (void*)0                      // array buffer offset
+          );
 
-  // Draw the triangles !
-  glDrawArrays(GL_TRIANGLES, 0, 2*3); // 2*3 indices starting at 0 -> 2 triangles
+          // Draw the triangles !
+          glDrawArrays(GL_TRIANGLES, 0, 2*3); // 2*3 indices starting at 0 -> 2 triangles
 
-  glDisableVertexAttribArray(vertexPosition_modelspaceID);
-  glDisableVertexAttribArray(vertexUVID);
-  }
+          glDisableVertexAttribArray(vertexPosition_modelspaceID);
+          glDisableVertexAttribArray(vertexUVID);
+      }
 
-  // Render all Children (recursively)
-	std::vector<Entity*> children = _entity->getChildren();
-	std::vector<Entity*>::iterator child;
-	for (child = children.begin(); child != children.end(); child++) {
-		// Transform child's children...
-		this->renderEntity(modelMatrix, *child);
-		// ...then reset modelMatrix for siblings to the modelMatrix of the parent.
-    modelMatrix = (*child)->getParentModelMatrix();
-  }
+      // Render all Children (recursively)
+    	std::vector<Entity*> children = _entity->getChildren();
+	    std::vector<Entity*>::iterator child;
+    	for (child = children.begin(); child != children.end(); child++) {
+    		// Transform child's children...
+    		this->renderEntity(modelMatrix, *child);
+        }
 }
 
 glm::mat4 Renderer::getModelMatrix(Entity* _entity) {
@@ -154,7 +150,7 @@ void Renderer::setScreenSize(int _sWidth, int _sHeight, bool _wanted_fullSreen){
   window_width  = _sWidth;
   window_height = _sHeight;
   fullScreen = _wanted_fullSreen;
-  //glfwSetWindowSize(window, window_width, window_height);
+  glfwSetWindowSize(window, window_width, window_height);
   #ifndef __APPLE__
 		// Since apple does this automatically. This will cause some bugs where the viewport gets very small.
 
@@ -169,13 +165,15 @@ void Renderer::swapBuffers() {
 }
 
 bool Renderer::testCulling(Entity* _entity) {
-  if (_entity->getWorldPosition().x + _entity->getWidth()/2 < -100 + scene->camera->getPosition().x + 200 * DEBUG || _entity->getWorldPosition().x - _entity->getWidth()/2 >  100 + SWIDTH + scene->camera->getPosition().x - 200 * DEBUG ) {
-    return false;
-  }
-  if (_entity->getWorldPosition().y + _entity->getHeight()/2 < -100 + scene->camera->getPosition().y + 200 * DEBUG || _entity->getWorldPosition().y - _entity->getHeight()/2 > 100 + SHEIGHT + scene->camera->getPosition().y - 200 * DEBUG ) {
-    return false;
-  }
-  return true;
+	float tp = sqrt(_entity->getWidth() * _entity->getWidth() + _entity->getHeight() * _entity->getHeight());
+
+	if (_entity->getWorldPosition().x + tp < -100 + scene->camera->getPosition().x + tp * DEBUG * 2 || _entity->getWorldPosition().x - tp >  100 + SWIDTH + scene->camera->getPosition().x - tp * DEBUG  * 2) {
+		return false;
+	}
+	if (_entity->getWorldPosition().y + tp < -100 + scene->camera->getPosition().y + tp * DEBUG * 2 || _entity->getWorldPosition().y - tp > 100 + SHEIGHT + scene->camera->getPosition().y - tp * DEBUG  * 2) {
+		return false;
+	}
+	return true;
 }
 
 int Renderer::initGL() {

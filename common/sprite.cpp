@@ -1,25 +1,28 @@
 #include <common/sprite.h>
 
-Sprite::Sprite(std::string image_path, int sprite_width, int sprite_height) {
-  // Our vertices. Tree consecutive floats give a 3D vertex; Three consecutive vertices give a triangle.
-  // A sprite has 1 face (quad) with 2 triangles each, so this makes 1*2=2 triangles, and 2*3 vertices
-  texture = loadTGA(image_path.c_str());
+Sprite::Sprite(std::string imagepath, int filter) {
+	vertexbuffer = 0;
+	uvbuffer = 0;
+	texture = 0;
 
-	_width = sprite_width;
-	_height = sprite_height;
+	_width = 0;
+	_height = 0;
+	// Our vertices. Tree consecutive floats give a 3D vertex; Three consecutive vertices give a triangle.
+  	// A sprite has 1 face (quad) with 2 triangles each, so this makes 1*2=2 triangles, and 2*3 vertices
+  	loadTGA(imagepath.c_str(), filter);
 
-	static const GLfloat g_vertex_buffer_data[18] = {
-    0.5f * sprite_width, -0.5f * sprite_height, 0.0f,
-   -0.5f * sprite_width, -0.5f * sprite_height, 0.0f,
-   -0.5f * sprite_width,  0.5f * sprite_height, 0.0f,
+	const GLfloat g_vertex_buffer_data[18] = {
+    	0.5f * _width, -0.5f * _height, 0.0f,
+   	   -0.5f * _width, -0.5f * _height, 0.0f,
+   	   -0.5f * _width,  0.5f * _height, 0.0f,
 
-    -0.5f * sprite_width,  0.5f * sprite_height, 0.0f,
-     0.5f * sprite_width,  0.5f * sprite_height, 0.0f,
-     0.5f * sprite_width, -0.5f * sprite_height, 0.0f
+       -0.5f * _width,  0.5f * _height, 0.0f,
+     	0.5f * _width,  0.5f * _height, 0.0f,
+     	0.5f * _width, -0.5f * _height, 0.0f
 	};
 
 	// Two UV coordinates for each vertex.
-	static const GLfloat g_uv_buffer_data[12] = {
+	const GLfloat g_uv_buffer_data[12] = {
 		1.0f, 1.0f,
 		0.0f, 1.0f,
 		0.0f, 0.0f,
@@ -38,7 +41,7 @@ Sprite::Sprite(std::string image_path, int sprite_width, int sprite_height) {
 	glBufferData(GL_ARRAY_BUFFER, sizeof(g_uv_buffer_data), g_uv_buffer_data, GL_STATIC_DRAW);
 }
 
-GLuint Sprite::loadTGA(const std::string& imagepath)
+void Sprite::loadTGA(const std::string& imagepath, int filter)
 {
 	FILE *file;
 	unsigned char type[4];
@@ -48,7 +51,7 @@ GLuint Sprite::loadTGA(const std::string& imagepath)
 
 	if (!file) {
 		std::cout << "error: unable to open file: " << imagepath << std::endl;
-		return 0;
+		return;
 	}
 
 	size_t s;
@@ -61,36 +64,37 @@ GLuint Sprite::loadTGA(const std::string& imagepath)
 	{
 		std::cout << "error: image type neither color or grayscale" << std::endl;
 		fclose(file);
-		return 0;
+		return;
 	}
 
     unsigned int imagesize;
-    unsigned int width, height;
     unsigned char* data;
     unsigned char bitdepth;
 
-	width = info[0] + info[1] * 256;
-	height = info[2] + info[3] * 256;
+	this->_width = info[0] + info[1] * 256;
+	this->_height = info[2] + info[3] * 256;
 	bitdepth = info[4] / 8;
+
+	std::cout << "~imagepath:" << imagepath << " width:" << this->_width << " height:" << this->_height << '\n';
 
 	if (bitdepth != 1 && bitdepth != 3 && bitdepth != 4) {
 		std::cout << "bytecount not 1, 3 or 4" << std::endl;
 		fclose(file);
-		return 0;
+		return;
 	}
 
   // Check if the image's width and height is a power of 2. No biggie, we can handle it.
-	if ((width & (width - 1)) != 0) {
+	if ((this->_width & (this->_width - 1)) != 0) {
 		std::cout << "warning: " << imagepath << "’s width is not a power of 2" << std::endl;
 	}
-	if ((height & (height - 1)) != 0) {
+	if ((this->_height & (this->_height - 1)) != 0) {
 		std::cout << "warning: " << imagepath << "’s height is not a power of 2" << std::endl;
 	}
-	if (width != height) {
+	if (_width != _height) {
 		std::cout << "warning: " << imagepath << " is not square" << std::endl;
 	}
 
-	imagesize = width * height * bitdepth;
+	imagesize = this->_width * this->_height * bitdepth;
 
     // Create a buffer
     data = new unsigned char [imagesize];
@@ -112,7 +116,6 @@ GLuint Sprite::loadTGA(const std::string& imagepath)
     glBindTexture(GL_TEXTURE_2D, textureID);
 
     // filter the Texture
-    unsigned char filter = 0;
     switch (filter) {
         case 0:
             // No filtering.
@@ -153,13 +156,13 @@ GLuint Sprite::loadTGA(const std::string& imagepath)
         case 4:
             glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
             glEnable(GL_BLEND);
-            glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_BGRA, GL_UNSIGNED_BYTE, data);
+            glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, this->_width, this->_height, 0, GL_BGRA, GL_UNSIGNED_BYTE, data);
             break;
         case 3:
-            glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_BGR, GL_UNSIGNED_BYTE, data);
+            glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, this->_width, this->_height, 0, GL_BGR, GL_UNSIGNED_BYTE, data);
             break;
         case 1:
-            glTexImage2D(GL_TEXTURE_2D, 0, GL_LUMINANCE, width, height, 0, GL_LUMINANCE, GL_UNSIGNED_BYTE, data);
+            glTexImage2D(GL_TEXTURE_2D, 0, GL_LUMINANCE, this->_width, this->_height, 0, GL_LUMINANCE, GL_UNSIGNED_BYTE, data);
             break;
         default:
             std::cout << "error: bitdepth not 4, 3, or 1" << std::endl;
@@ -170,7 +173,7 @@ GLuint Sprite::loadTGA(const std::string& imagepath)
     delete [] data;
 
     // Return the ID of the texture we just created
-    return textureID;
+    this->texture = textureID;
 }
 
 Sprite::~Sprite(){

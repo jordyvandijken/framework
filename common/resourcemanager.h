@@ -36,8 +36,8 @@ public:
 	/// @param width in pixels (has a standard width in config)
 	/// @param height in pixels (has a standard height in config)
 	/// @return Sprite* a pointer to a Sprite, created from an image file (.tga only).
-	static Sprite* getSprite(const std::string& filename, int _sprite_width = STANDARDSPRITEWIDTH, int _sprite_height = STANDARDSPRITEHEIGHT) { return getInstance()->_getSprite(filename, _sprite_width, _sprite_height); };
-	Sprite* _getSprite(const std::string& filename, int _sprite_width = STANDARDSPRITEWIDTH, int _sprite_height = STANDARDSPRITEHEIGHT);
+	static Sprite* getSprite(const std::string& filename, int filter = 0) { return getInstance()->_getSprite(filename, filter); };
+	Sprite* _getSprite(const std::string& filename, int filter);
 	/// @brief Get ResourceManager
 	/// @return ResourceManager* a pointer to ResourceManager
 	static ResourceManager* getInstance();

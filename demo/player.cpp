@@ -8,8 +8,8 @@ void Player::update(float deltaTime) {
 
 }
 
-void Player::updatePos(glm::vec2 _pos) {
-  position += _pos;
+void Player::updatePos(Vector2 _pos) {
+  this->position += _pos;
 }
 
 Player::~Player(){

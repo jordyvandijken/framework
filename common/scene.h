@@ -23,6 +23,7 @@
 #include <common/resourcemanager.h>
 #include <common/sound.h>
 #include <common/audio.h>
+#include <common/vector2.h>
 
 /// @brief The Scene class is the Base class for your own Scenes. It has a Camera and Input.
 class Scene {
@@ -36,7 +37,7 @@ public:
 	/// @brief add entity to the scene for rendering
 	/// @param Entity* entity
 	/// @return void
-	void addEntity(Entity* _entity);
+	void addChild(Entity* _entity);
 	/// @brief get a list of entities that are added to the scene
 	/// @return std::vector<Entity* >
 	std::vector<Entity *> getEntities() {return entities;};

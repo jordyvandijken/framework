@@ -18,12 +18,13 @@ ResourceManager* ResourceManager::getInstance() {
 }
 
 // Sprite
-Sprite* ResourceManager::_getSprite(const std::string& filename, int _sprite_width, int _sprite_height)  {
-	auto search = _sprites.find(filename);
+Sprite* ResourceManager::_getSprite(const std::string& filename, int filter)  {
+  auto search = _sprites.find(filename);
   if(search != _sprites.end()) {
 		return search->second;
   } else {
-		Sprite* t = new Sprite(filename, _sprite_width, _sprite_height);
+	  	std::cout << "Load: " << filename << '\n';
+		Sprite* t = new Sprite(filename, filter);
 		_sprites[filename] = t;
 		return t;
 	}
@@ -31,7 +32,7 @@ Sprite* ResourceManager::_getSprite(const std::string& filename, int _sprite_wid
 }
 
 void ResourceManager::cleanUp() {
-	// adawda
+	// clean up the sprites
 	std::map<std::string, Sprite*>::iterator sprite_it;
 	for (sprite_it=_sprites.begin(); sprite_it!=_sprites.end(); ++sprite_it) {
 		if (sprite_it->second != NULL) {

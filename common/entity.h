@@ -32,6 +32,7 @@
 
 #include <common/sprite.h>
 #include <common/config.h>
+#include <common/vector2.h>
 
 /// @brief The Entity class is a instance of standard Scene.
 class Entity {
@@ -62,7 +63,7 @@ public:
 	/// @brief set position with glm::vec2.
 	/// @param glm::vec2(x,y)
 	/// @return void
-	void setPosition(glm::vec2 _pos);
+	void setPosition(Vector2 _pos);
 	/// @brief get the layer of the Entity.
 	/// @return int - return layer
 	int getLayer() {return layer;};
@@ -83,16 +84,16 @@ public:
 	Entity* getChild(int _num);
 	/// @brief get the position of Entity.
 	/// @return glm::vec2(x,y) - return position
-	glm::vec2 getPosition() {return position;};
+	Vector2 getPosition() {return position;};
 	/// @brief get the scale of Entity.
 	/// @return glm::vec2(scaleX,scaleY) - return scale
-	glm::vec2 getScale() {return scale;};
+ 	Vector2 getScale() {return scale;};
 	/// @brief get all children of Entity.
 	/// @return std::vector<Entity*> - return children
 	std::vector<Entity*> getChildren() {return children;};
 
-	glm::vec2 position; ///< @brief position of the Entity
-	glm::vec2 scale; ///< @brief scale of the Entity
+	Vector2 position; ///< @brief position of the Entity
+	Vector2 scale; ///< @brief scale of the Entity
 
 	int layer; ///< @brief layer of the Entity
 
@@ -100,19 +101,21 @@ public:
 
 	Entity* parent; ///< @brief parent of the Entity
 
-	void setModelMatrix(glm::mat4 mm);
+	void setWorldPos(Vector2 wp) {worldpos = wp;};
 
-	glm::mat4 getParentModelMatrix();
-
-	void setWorldPos(glm::vec2 wp) {worldpos = wp;};
-
-	glm::vec2 getWorldPosition() {return worldpos;};
+	Vector2 getWorldPosition() {return worldpos;};
 
 	int getWidth() {if (sprite != NULL) {return sprite->getWidth() * scale.x;} else {return 1;};};
 
 	int getHeight() {if (sprite != NULL) {return sprite->getHeight() * scale.y;} else {return 1;};};
 
 	float getRad() {return rotation * DEGTORAD;};
+
+	Vector2 worldpos; ///< Brief position of the Entity in the world
+
+	void scaleToSize(int _x = 0, int _y = 0);
+
+	Vector2 getParentScale();
 
 private:
 	Sprite* sprite;  ///< @brief sprite of the Entity
@@ -122,10 +125,6 @@ private:
 	int _entityNum; ///< @brief intity number of the Entity
 
 	static int _nextNum; ///< @brief next number
-
-	glm::mat4 _modelMatrix;
-
-	glm::vec2 worldpos;
 
 };
 
